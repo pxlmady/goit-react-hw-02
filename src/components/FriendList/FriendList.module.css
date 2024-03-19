@@ -1,0 +1,35 @@
+p {
+    margin: 0;
+}
+
+.friendsList {
+    display: flex;
+    gap: 5px 10px;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.friendListItem {
+    font-size: 18px;
+    border: 3px solid black;
+    border-radius: 4px;
+    padding: 15px;
+    background-color: #fff;
+
+    transition: box-shadow 0.6s ease;
+    transition: transform 0.3s ease;
+    box-shadow: 0.5px 0.5px 0.8px hsl(233deg 28% 75% / 0.28),
+            2.3px 2.2px 3.6px -1.2px hsl(233deg 28% 75% / 0.28),
+            8.4px 8.1px 13.1px -2.5px hsl(233deg 28% 75% / 0.28);
+}
+
+
+.friendListItem:hover {
+    transform: scale(1.1);
+
+    box-shadow: 0.5px 0.5px 0.8px hsl(233deg 28% 75% / 0.28),
+            3.2px 3.1px 5px -0.6px hsl(233deg 28% 75% / 0.28),
+            7.2px 7px 11.3px -1.2px hsl(233deg 28% 75% / 0.28),
+            15.6px 15.1px 24.4px -1.9px hsl(233deg 28% 75% / 0.28),
+            31.2px 30.1px 48.8px -2.5px hsl(233deg 28% 75% / 0.28);
+}
