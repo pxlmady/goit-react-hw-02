@@ -1,31 +1,61 @@
-import './App.css'
-import Profile from "../Profile/Profile.jsx";
-import userData from "../../userData.json";
-import friends from "../../friends.json";
-import FriendList from "../FriendList/FriendList.jsx";
-import TransactionHistory from "../TransactionHistory/TransactionHistory";
-import transactions from "../../userTransactions.json";
+import { useEffect, useState } from "react";
+import "./App.css";
+import Description from "../Description/Description";
+import Options from "../Options/Options";
+import Feedback from "../Feedback/Feedback";
+import Notification from "../Notification/Notification";
 
-const App = () => {
+function App() {
+  const STORAGE_KEY = "feedbackData";
+  const initialFeedbackData = JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
+
+  const [guestOpinion, setguestOpinion] = useState(initialFeedbackData);
+  const updateFeedback = (feedbackType) => {
+    setguestOpinion({
+      ...guestOpinion,
+      [feedbackType]: guestOpinion[feedbackType] + 1,
+    });
+  };
+  const totalFeedback =
+    guestOpinion.good + guestOpinion.bad + guestOpinion.neutral;
+  const percentOfPositiveFeedback = Math.round(
+    ((guestOpinion.good + guestOpinion.neutral) / totalFeedback) * 100
+  );
+  const handleResetButtonClick = () => {
+    setguestOpinion({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+  };
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(guestOpinion));
+  });
   return (
     <>
-      <Profile
-        name={userData.username}
-        tag={userData.tag}
-        location={userData.location}
-        image={userData.avatar}
-        stats={userData.stats}
-      />
-      
-      <hr />
-
-      <FriendList friends={friends} />
-
-      <hr />
-
-      <TransactionHistory items={transactions} />
+      <div className="cafePlace">
+        <Description />
+        <Options
+          updateFeedback={updateFeedback}
+          totalFeedbackNumber={totalFeedback}
+          onResetButtonClick={handleResetButtonClick}
+        />
+        {totalFeedback === 0 ? (
+          <Notification />
+        ) : (
+          <Feedback
+            guestOpinion={guestOpinion}
+            total={totalFeedback}
+            positive={percentOfPositiveFeedback}
+          />
+        )}
+      </div>
     </>
   );
-};
+}
 
 export default App;
